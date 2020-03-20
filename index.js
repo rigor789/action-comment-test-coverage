@@ -1,4 +1,4 @@
-const { inspect } = require("util");
+const {inspect} = require("util");
 const core = require("@actions/core");
 const github = require("@actions/github");
 const fs = require('fs');
@@ -12,7 +12,7 @@ async function run() {
     };
 
     const {
-      payload: { pull_request: pullRequest, repository }
+      payload: {pull_request: pullRequest, repository}
     } = github.context;
 
     if (!pullRequest) {
@@ -20,8 +20,8 @@ async function run() {
       return;
     }
 
-    const { number: issueNumber } = pullRequest;
-    const { full_name: repoFullName } = repository;
+    const {number: issueNumber} = pullRequest;
+    const {full_name: repoFullName} = repository;
     const [owner, repo] = repoFullName.split('/');
 
     const octokit = new github.GitHub(inputs.token);
@@ -39,14 +39,31 @@ Lines:      ${json.total.lines.pct}% (${json.total.lines.covered}/${json.total.l
 ${codeBlock}
 
 ${inputs.coverageURL ? `[See full coverage report](${inputs.coverageURL})` : ''}
+<!-- action-comment-test-coverage -->
 `
-
-    await octokit.issues.createComment({
+    const comments = await octokit.issues.listComments({
       owner,
       repo,
-      issue_number: issueNumber,
-      body: JSON.stringify(coverage)
-    });
+      issue_number: issueNumber
+    })
+    const previousComment = comments.find(comment => comment.body.includes('action-comment-test-coverage'))
+
+    if (previousComment) {
+      // update existing comment
+      await octokit.issues.updateComment({
+        owner,
+        repo,
+        comment_id: previousComment.id,
+        body: JSON.stringify(coverage)
+      })
+    } else {
+      await octokit.issues.createComment({
+        owner,
+        repo,
+        issue_number: issueNumber,
+        body: JSON.stringify(coverage)
+      })
+    }
   } catch (error) {
     core.debug(inspect(error));
     core.setFailed(error.message);
