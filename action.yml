@@ -1,7 +1,7 @@
 name: 'Comment Test Coverage'
 description: 'Report coverage on PR based on coverage-summary.json'
 inputs:
-  path:
+  coveragePath:
     description: 'path to coverage-summary.json'
     default: 'coverage/coverage-summary.json'
     required: false
