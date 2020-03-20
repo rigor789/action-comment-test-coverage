@@ -54,14 +54,14 @@ ${inputs.coverageURL ? `[See full coverage report](${inputs.coverageURL})` : ''}
         owner,
         repo,
         comment_id: previousComment.id,
-        body: JSON.stringify(coverage)
+        body: coverage
       })
     } else {
       await octokit.issues.createComment({
         owner,
         repo,
         issue_number: issueNumber,
-        body: JSON.stringify(coverage)
+        body: coverage
       })
     }
   } catch (error) {
