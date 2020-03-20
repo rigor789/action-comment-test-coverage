@@ -1,0 +1,16 @@
+name: 'Comment Test Coverage'
+description: 'Report coverage on PR based on coverage-summary.json'
+inputs:
+  path:
+    description: 'path to coverage-summary.json'
+    default: 'coverage/coverage-summary.json'
+    required: false
+  coverageURL:
+    description: 'URL for coverage'
+    required: false
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+branding:
+  icon: 'message-circle'
+  color: 'blue'
