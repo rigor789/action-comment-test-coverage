@@ -29,7 +29,7 @@ async function run() {
     const data = fs.readFileSync(`${process.env.GITHUB_WORKSPACE}/${inputs.path}`, 'utf8');
     const json = JSON.parse(data);
 
-    const outro = coverageURL ? `\nFull Coverage Report: ${coverageURL}` : ''
+    const outro = inputs.coverageURL ? `\nFull Coverage Report: ${inputs.coverageURL}` : ''
     const coverage = `==== **Coverage** ====
 Statements: ${json.total.statements.pct}% ( ${json.total.statements.covered}/${json.total.statements.total} )
 Branches  : ${json.total.branches.pct}%   ( ${json.total.branches.covered}  /${json.total.branches.total} )
