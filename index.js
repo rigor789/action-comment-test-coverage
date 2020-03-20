@@ -45,8 +45,9 @@ ${inputs.coverageURL ? `[See full coverage report](${inputs.coverageURL})` : ''}
       owner,
       repo,
       issue_number: issueNumber
-    })
-    const previousComment = comments && comments.find(comment => comment.body.includes('action-comment-test-coverage'))
+    }).then(res => res.data)
+
+    const previousComment = Array.isArray(comments) && comments.find(comment => comment.body.includes('action-comment-test-coverage'))
 
     if (previousComment) {
       // update existing comment
