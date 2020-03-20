@@ -543,7 +543,7 @@ ${inputs.coverageURL ? `[See full coverage report](${inputs.coverageURL})` : ''}
       repo,
       issue_number: issueNumber
     })
-    const previousComment = comments.find(comment => comment.body.includes('action-comment-test-coverage'))
+    const previousComment = comments && comments.find(comment => comment.body.includes('action-comment-test-coverage'))
 
     if (previousComment) {
       // update existing comment
@@ -551,14 +551,14 @@ ${inputs.coverageURL ? `[See full coverage report](${inputs.coverageURL})` : ''}
         owner,
         repo,
         comment_id: previousComment.id,
-        body: JSON.stringify(coverage)
+        body: coverage
       })
     } else {
       await octokit.issues.createComment({
         owner,
         repo,
         issue_number: issueNumber,
-        body: JSON.stringify(coverage)
+        body: coverage
       })
     }
   } catch (error) {
